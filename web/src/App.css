@@ -440,7 +440,7 @@ select.input {
 
 .login-logo {
   width: 100%;
-  max-width: min(280px, 78vw);
+  max-width: min(210px, 58.5vw);
   margin: 0 auto var(--space-6);
   display: block;
   border-radius: var(--radius-lg);
