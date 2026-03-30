@@ -1,6 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import SocialPostAnalyzerCard from '../components/SocialPostAnalyzerCard';
+import AppFooterNav from '../components/AppFooterNav';
 
 export default function ProfilePage() {
   const { user, setUser, setSocialAccounts } = useApp();
@@ -15,8 +16,13 @@ export default function ProfilePage() {
     navigate('/login');
   };
 
+  const goDashboardTab = (key) => {
+    if (key === 'profile') return;
+    navigate('/', { state: { dashboardTab: key } });
+  };
+
   return (
-    <div className="container">
+    <div className="container" style={{ paddingBottom: 88 }}>
       <h1 className="title">Profile</h1>
 
       <div className="card">
@@ -38,6 +44,8 @@ export default function ProfilePage() {
       <button className="btn btn-secondary" onClick={handleLogout} style={{ marginTop: 24 }}>
         Log out
       </button>
+
+      <AppFooterNav activeKey="profile" onTabClick={goDashboardTab} />
     </div>
   );
 }

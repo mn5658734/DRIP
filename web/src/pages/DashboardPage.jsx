@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { get, post, uploadPhoto } from '../api';
 import SocialPostAnalyzerCard from '../components/SocialPostAnalyzerCard';
+import AppFooterNav from '../components/AppFooterNav';
 
 const OCCASIONS = [
   { key: 'office', label: 'Office' },
@@ -66,16 +67,10 @@ const SHOE_FEMALE = [
   { key: 'half_shoes', label: 'Half shoes' },
 ];
 
-const FOOTER_TABS = [
-  { key: 'home', label: 'HOME', icon: '🧥' },
-  { key: 'wardrobe', label: 'WARDROBE', icon: '👗' },
-  { key: 'declutter', label: 'DECLUTTER', icon: '♻️' },
-  { key: 'profile', label: 'PROFILE', icon: '👤' },
-];
-
 export default function DashboardPage() {
   const { user, setUser, selectedOccasion, setSelectedOccasion, outfitPrefs, setOutfitPrefs, setSocialAccounts } = useApp();
   const navigate = useNavigate();
+  const location = useLocation();
   const [tab, setTab] = useState('home');
   const isFemale = user?.gender === 'female';
   const [weather, setWeather] = useState(null);
@@ -573,19 +568,7 @@ export default function DashboardPage() {
         )}
       </div>
 
-      <footer className="app-footer">
-        {FOOTER_TABS.map(t => (
-          <button
-            key={t.key}
-            type="button"
-            className={`footer-tab ${tab === t.key ? 'active' : ''}`}
-            onClick={() => setTab(t.key)}
-          >
-            <span className="footer-icon">{t.icon}</span>
-            <span className="footer-label">{t.label}</span>
-          </button>
-        ))}
-      </footer>
+      <AppFooterNav activeKey={tab} onTabClick={setTab} />
 
       {showDripPopup && (
         <DripPopup
