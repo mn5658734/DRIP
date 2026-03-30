@@ -32,6 +32,10 @@ export default function LoginPage() {
   };
 
   const handleVerify = async () => {
+    if (!name?.trim()) {
+      setError('Please enter your name');
+      return;
+    }
     if (!otp || otp.length < 4) {
       setError('Enter the 4-digit OTP');
       return;

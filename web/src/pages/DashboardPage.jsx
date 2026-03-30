@@ -110,14 +110,6 @@ export default function DashboardPage() {
     get(`/wardrobe/${userId}`).then(d => setItems(d.items || [])).catch(() => setItems([]));
   }, [userId]);
 
-  const greeting = () => {
-    const h = new Date().getHours();
-    if (h >= 5 && h < 12) return 'Good Morning';
-    if (h >= 12 && h < 17) return 'Good Afternoon';
-    if (h >= 17 && h < 21) return 'Good Evening';
-    return 'Good Night';
-  };
-
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files || []).filter(f => f.type.startsWith('image/'));
     if (files.length) setPendingFiles(files);
@@ -245,7 +237,7 @@ export default function DashboardPage() {
       {tab === 'home' && (
         <>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
-            <h1 className="title" style={{ marginBottom: 0 }}>{greeting()} {user?.name || 'User'} ☀️</h1>
+            <h1 className="title" style={{ marginBottom: 0 }}>Hello {user?.name || 'User'}</h1>
             {weather && (
               <div className="card" style={{ padding: 12, marginBottom: 0 }}>
                 <div>{weather.temperature}°C</div>
