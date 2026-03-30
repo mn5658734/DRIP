@@ -66,9 +66,9 @@ export default function LoginPage() {
 
   return (
     <div className="container login-page">
-      <div className="login-logo">
+      <div className="login-logo" role="img" aria-label="DRIP — AI digital wardrobe">
         <video autoPlay loop muted playsInline>
-          <source src="/logo.mp4" type="video/mp4" />
+          <source src="/download.mp4" type="video/mp4" />
         </video>
       </div>
 
