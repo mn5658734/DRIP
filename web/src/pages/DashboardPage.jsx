@@ -226,14 +226,14 @@ export default function DashboardPage() {
       {tab === 'home' && (
         <>
           <h1 className="title" style={{ marginBottom: 24 }}>Hello {user?.name?.trim() || 'User'}</h1>
-          <Link to="/rush-mode" className="card" style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: 24, background: '#e94560' }}>
-            <h2 style={{ fontSize: 20 }}>🔥 I'm Getting Late!</h2>
-            <p style={{ fontSize: 14, opacity: 0.9 }}>AI picks best outfit in 3 sec</p>
+          <Link to="/rush-mode" className="card rush-card">
+            <h2>🔥 I&apos;m Getting Late!</h2>
+            <p>AI picks best outfit in 3 sec</p>
           </Link>
         </>
       )}
 
-      <div className="card" style={{ minHeight: 200, marginBottom: 80 }}>
+      <div className="card dashboard-stack">
         {tab === 'home' && (
           <>
             <div className="digital-wardrobe-heading">
@@ -248,7 +248,7 @@ export default function DashboardPage() {
                 🎨
               </button>
             </div>
-            <p style={{ color: '#8892b0', marginBottom: 16 }}>{items.length} items</p>
+            <p className="text-caption" style={{ marginBottom: 16 }}>{items.length} items</p>
             {items.length === 0 ? (
               <div className="upload-zone" style={{ marginBottom: 0, cursor: 'pointer' }} onClick={() => setTab('wardrobe')}>
                 <p style={{ fontSize: 32, marginBottom: 8 }}>👗</p>
@@ -300,8 +300,8 @@ export default function DashboardPage() {
               </div>
             )}
 
-            <div style={{ borderTop: '1px solid #16213e', paddingTop: 24, marginTop: 24 }}>
-              <p style={{ marginBottom: 8, color: '#8892b0', fontWeight: 600 }}>Occasion</p>
+            <div className="divider-top">
+              <p className="section-label">Occasion</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
                 {OCCASIONS.map(o => (
                   <span
@@ -314,7 +314,7 @@ export default function DashboardPage() {
                 ))}
               </div>
 
-              <p style={{ marginBottom: 8, color: '#8892b0', fontWeight: 600 }}>Day or Night?</p>
+              <p className="section-label">Day or Night?</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
                 {DAY_NIGHT.map(d => (
                   <span
@@ -340,7 +340,7 @@ export default function DashboardPage() {
                 ))}
               </div>
 
-              <p style={{ marginBottom: 8, color: '#8892b0', fontWeight: 600 }}>Sleeve preference</p>
+              <p className="section-label">Sleeve preference</p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
                 {SLEEVE.map(s => (
                   <span
@@ -355,7 +355,7 @@ export default function DashboardPage() {
 
               {isFemale && (
                 <>
-                  <p style={{ marginBottom: 8, color: '#8892b0', fontWeight: 600 }}>Shoe type</p>
+                  <p className="section-label">Shoe type</p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 }}>
                     {SHOE_FEMALE.map(s => (
                       <span
@@ -383,7 +383,7 @@ export default function DashboardPage() {
         {tab === 'wardrobe' && (
           <>
             <h2 style={{ fontSize: 20, marginBottom: 12 }}>Your wardrobe</h2>
-            <p style={{ color: '#8892b0', marginBottom: 16 }}>{items.length} items</p>
+            <p className="text-caption" style={{ marginBottom: 16 }}>{items.length} items</p>
             {items.length === 0 ? (
               <p style={{ color: '#8892b0', marginBottom: 16 }}>No clothes yet. Select photos from your device below.</p>
             ) : (
@@ -544,10 +544,10 @@ export default function DashboardPage() {
           <>
             <h2 style={{ fontSize: 20, marginBottom: 12 }}>Profile</h2>
             <div style={{ marginBottom: 16 }}>
-              <p style={{ fontSize: 12, color: '#8892b0' }}>Name</p>
-              <p style={{ marginTop: 4 }}>{user?.name?.trim() || '—'}</p>
-              <p style={{ fontSize: 12, color: '#8892b0', marginTop: 12 }}>Phone</p>
-              <p style={{ marginTop: 4 }}>{user?.phone || '—'}</p>
+              <p className="section-label" style={{ marginBottom: 'var(--space-2)' }}>Name</p>
+              <p style={{ marginTop: 0, fontSize: 'var(--text-md)', fontWeight: 600 }}>{user?.name?.trim() || '—'}</p>
+              <p className="section-label" style={{ marginTop: 'var(--space-4)', marginBottom: 'var(--space-2)' }}>Phone</p>
+              <p style={{ marginTop: 0, fontSize: 'var(--text-md)', fontWeight: 600 }}>{user?.phone || '—'}</p>
             </div>
             <SocialPostAnalyzerCard />
             <Link to="/profile" className="btn btn-secondary" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: 16 }}>

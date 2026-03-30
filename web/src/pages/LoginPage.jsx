@@ -65,7 +65,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="container">
+    <div className="container login-page">
       <div className="login-logo">
         <video autoPlay loop muted playsInline>
           <source src="/logo.mp4" type="video/mp4" />
@@ -73,8 +73,7 @@ export default function LoginPage() {
       </div>
 
       <h1 className="title">Welcome to DRIP</h1>
-      <p className="tagline">Your digital wardrobe</p>
-      <p className="subtitle">Sign in with your phone number</p>
+      <p className="tagline">One Click Fashion</p>
 
       {error && <p style={{ color: '#e94560', marginBottom: 16, fontSize: 14 }}>{error}</p>}
 

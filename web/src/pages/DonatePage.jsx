@@ -33,7 +33,7 @@ export default function DonatePage() {
   return (
     <div className="container">
       <div style={{ marginBottom: 16 }}>
-        <Link to="/" style={{ color: '#8892b0', fontSize: 14 }}>← Back to Dashboard</Link>
+        <Link to="/" className="back-link">← Back to Dashboard</Link>
       </div>
       <h1 className="title">Declutter & Donate</h1>
       <p className="subtitle">Select items from your wardrobe to donate. We'll schedule a pickup.</p>

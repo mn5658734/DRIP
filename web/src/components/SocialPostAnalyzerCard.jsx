@@ -44,17 +44,17 @@ export default function SocialPostAnalyzerCard({ compact = false }) {
 
   const wrapStyle = compact
     ? {}
-    : { marginTop: 20, paddingTop: 20, borderTop: '1px solid #16213e' };
+    : { marginTop: 'var(--space-5)', paddingTop: 'var(--space-5)', borderTop: '1px solid var(--border-subtle)' };
 
   return (
     <div style={wrapStyle}>
-      <h3 style={{ fontSize: 16, marginBottom: 8 }}>Post analyzer</h3>
-      <p style={{ fontSize: 13, color: '#8892b0', marginBottom: 16, lineHeight: 1.4 }}>
+      <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 700, marginBottom: 'var(--space-2)', lineHeight: 'var(--leading-tight)' }}>Post analyzer</h3>
+      <p className="text-caption" style={{ marginBottom: 'var(--space-4)', lineHeight: 'var(--leading-relaxed)' }}>
         Connect Instagram or Facebook to analyze recent posts and spot outfits—dresses and accessories you’re wearing (AI rollout next).
       </p>
 
-      <div style={{ marginBottom: 16 }}>
-        <p style={{ fontSize: 12, color: '#8892b0', marginBottom: 8 }}>Instagram</p>
+      <div style={{ marginBottom: 'var(--space-4)' }}>
+        <p className="section-label" style={{ marginBottom: 'var(--space-2)' }}>Instagram</p>
         {socialAccounts.instagram.connected ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 14 }}>@{socialAccounts.instagram.username}</span>
@@ -80,7 +80,7 @@ export default function SocialPostAnalyzerCard({ compact = false }) {
       </div>
 
       <div>
-        <p style={{ fontSize: 12, color: '#8892b0', marginBottom: 8 }}>Facebook</p>
+        <p className="section-label" style={{ marginBottom: 'var(--space-2)' }}>Facebook</p>
         {socialAccounts.facebook.connected ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
             <span style={{ fontSize: 14 }}>{socialAccounts.facebook.userId}</span>

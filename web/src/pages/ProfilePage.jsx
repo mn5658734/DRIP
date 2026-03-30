@@ -22,26 +22,26 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container" style={{ paddingBottom: 88 }}>
+    <div className="container page-with-footer-nav">
       <h1 className="title">Profile</h1>
 
       <div className="card">
-        <p style={{ fontSize: 12, color: '#8892b0' }}>Name</p>
-        <p style={{ marginTop: 4 }}>{user?.name?.trim() || '—'}</p>
-        <p style={{ fontSize: 12, color: '#8892b0', marginTop: 12 }}>Phone</p>
-        <p style={{ marginTop: 4 }}>{user?.phone || '—'}</p>
+        <p className="section-label" style={{ marginBottom: 'var(--space-2)' }}>Name</p>
+        <p style={{ marginTop: 0, fontSize: 'var(--text-md)', fontWeight: 600 }}>{user?.name?.trim() || '—'}</p>
+        <p className="section-label" style={{ marginTop: 'var(--space-4)', marginBottom: 'var(--space-2)' }}>Phone</p>
+        <p style={{ marginTop: 0, fontSize: 'var(--text-md)', fontWeight: 600 }}>{user?.phone || '—'}</p>
       </div>
 
       <div className="card">
         <SocialPostAnalyzerCard compact />
       </div>
 
-      <div className="card" style={{ cursor: 'pointer' }}>Edit Profile</div>
-      <div className="card" style={{ cursor: 'pointer' }}>Style Preference</div>
-      <div className="card" style={{ cursor: 'pointer' }}>Favourite Outfits</div>
-      <div className="card" style={{ opacity: 0.7 }}>Payments — Coming Soon</div>
+      <div className="card card-row-action">Edit Profile</div>
+      <div className="card card-row-action">Style Preference</div>
+      <div className="card card-row-action">Favourite Outfits</div>
+      <div className="card card-muted">Payments — Coming Soon</div>
 
-      <button className="btn btn-secondary" onClick={handleLogout} style={{ marginTop: 24 }}>
+      <button className="btn btn-secondary" onClick={handleLogout} style={{ marginTop: 'var(--space-6)' }}>
         Log out
       </button>
 

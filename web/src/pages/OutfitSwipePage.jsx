@@ -38,7 +38,7 @@ export default function OutfitSwipePage() {
     return (
       <div className="container">
         <div style={{ marginBottom: 16 }}>
-          <Link to="/" style={{ color: '#8892b0', fontSize: 14 }}>← Back to Dashboard</Link>
+          <Link to="/" className="back-link">← Back to Dashboard</Link>
         </div>
         <div className="card" style={{ textAlign: 'center', padding: 48 }}>
           <p style={{ fontSize: 64, marginBottom: 16 }}>👗</p>
@@ -64,7 +64,10 @@ export default function OutfitSwipePage() {
         >
           🛍 Shop similar
         </button>
-        <img src="https://picsum.photos/seed/outfit/400/500" alt="Outfit" style={{ width: '100%', height: 400, objectFit: 'cover' }} />
+        <div className="ai-suggestion-media">
+          <img src="https://picsum.photos/seed/outfit/400/500" alt="AI outfit suggestion" style={{ width: '100%', height: 400, objectFit: 'cover', display: 'block' }} />
+          <AiImageFeedback userId={userId} suggestionId={outfit?.id} />
+        </div>
         <div style={{ padding: 16 }}>
           <p style={{ color: '#8892b0' }}>{outfit.aiExplanation}</p>
         </div>

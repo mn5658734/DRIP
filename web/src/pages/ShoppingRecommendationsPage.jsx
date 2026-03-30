@@ -25,7 +25,7 @@ export default function ShoppingRecommendationsPage() {
   return (
     <div className="container">
       <div style={{ marginBottom: 16 }}>
-        <Link to="/outfit-swipe" style={{ color: '#8892b0', fontSize: 14 }}>← Back to suggestions</Link>
+        <Link to="/outfit-swipe" className="back-link">← Back to suggestions</Link>
       </div>
 
       <h1 className="title">🛍 Shopping Recommendations</h1>

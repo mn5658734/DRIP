@@ -30,6 +30,9 @@ const MOCKS = {
 
 function getMockForUrl(url) {
   const base = url.split('?')[0];
+  if (base.includes('/outfits/') && base.includes('/feedback')) {
+    return { ok: true, received: true };
+  }
   for (const [key, val] of Object.entries(MOCKS)) {
     if (base.endsWith(key) || url.includes(key)) return val;
   }

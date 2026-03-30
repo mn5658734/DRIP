@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useApp } from '../context/AppContext';
 import { post } from '../api';
+import AiImageFeedback from '../components/AiImageFeedback';
 
 export default function RushModePage() {
   const navigate = useNavigate();
@@ -19,7 +21,10 @@ export default function RushModePage() {
     <div className="container">
       <h1 className="title">Your outfit is ready! 🎉</h1>
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <img src="https://picsum.photos/seed/rush/400/500" alt="Outfit" style={{ width: '100%', height: 350, objectFit: 'cover' }} />
+        <div className="ai-suggestion-media">
+          <img src="https://picsum.photos/seed/rush/400/500" alt="AI rush outfit suggestion" style={{ width: '100%', height: 350, objectFit: 'cover', display: 'block' }} />
+          <AiImageFeedback userId={userId} suggestionId={outfit?.id ? `rush-${outfit.id}` : 'rush'} />
+        </div>
         <div style={{ padding: 16 }}>
           <p style={{ color: '#8892b0' }}>{outfit?.aiExplanation}</p>
         </div>
