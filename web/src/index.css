@@ -10,6 +10,8 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
+  /* Keep bottom CTAs visible above fixed app footer when scrolling / focusing */
+  scroll-padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
 }
 
 body {

@@ -54,7 +54,8 @@
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.45);
 
   --touch-min: 48px;
-  --footer-h: 72px;
+  /* Approx. fixed .app-footer height (tabs + labels + vertical padding); keep in sync with footer nav styles */
+  --footer-h: 120px;
   --container-max: 480px;
   --focus-ring: 0 0 0 3px var(--accent-soft), 0 0 0 5px var(--accent);
 }
@@ -805,7 +806,13 @@ select.input {
 }
 
 .page-with-footer-nav {
-  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  /* Clears fixed .app-footer (tabs + labels + safe area) so last actions stay tappable */
+  padding-bottom: calc(8rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* Extra in-flow space so fixed footer never covers the last primary CTA on long forms */
+.dashboard-wardrobe-actions {
+  padding-bottom: var(--space-6);
 }
 
 .card-row-action {

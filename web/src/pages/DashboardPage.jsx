@@ -215,7 +215,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container">
+    <div className="container page-with-footer-nav">
       {tab !== 'home' && (
         <h1 className="title" style={{ marginBottom: 24 }}>
           {tab === 'wardrobe' && 'Wardrobe'}
@@ -443,7 +443,7 @@ export default function DashboardPage() {
                 Choose photos from device
               </button>
             </div>
-            <div style={{ marginTop: 16 }}>
+            <div className="dashboard-wardrobe-actions" style={{ marginTop: 16 }}>
               <label style={{ display: 'block', marginBottom: 8, color: '#8892b0' }}>Category:</label>
               <select value={category} onChange={(e) => { setCategory(e.target.value); if (e.target.value !== 'other') setCustomCategory(''); }} className="input" style={{ width: '100%', marginBottom: 12 }}>
                 <option value="t-shirt">T-shirt</option>
