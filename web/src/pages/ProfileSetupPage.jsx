@@ -24,7 +24,7 @@ export default function ProfileSetupPage() {
       <h1 className="title">Complete your profile</h1>
       <p className="subtitle">Helps AI suggest better outfits</p>
 
-      <p style={{ marginBottom: 8, color: '#8892b0' }}>Name: {user?.name || '—'}</p>
+      <p style={{ marginBottom: 8, color: '#8892b0' }}>Name: {user?.name?.trim() || '—'}</p>
 
       <p style={{ marginTop: 16, marginBottom: 8, color: '#8892b0' }}>Gender</p>
       <div style={{ marginBottom: 16 }}>

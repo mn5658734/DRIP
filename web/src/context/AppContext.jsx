@@ -9,6 +9,19 @@ const defaultPrefs = () => {
   } catch { return {}; }
 };
 
+const defaultSocial = () => {
+  try {
+    const s = localStorage.getItem('drape_social');
+    const p = s ? JSON.parse(s) : {};
+    return {
+      instagram: { connected: !!p.instagram?.connected, username: p.instagram?.username || '' },
+      facebook: { connected: !!p.facebook?.connected, userId: p.facebook?.userId || '' },
+    };
+  } catch {
+    return { instagram: { connected: false, username: '' }, facebook: { connected: false, userId: '' } };
+  }
+};
+
 export function AppProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
@@ -23,6 +36,7 @@ export function AppProvider({ children }) {
       return p.occasion || null;
     } catch { return null; }
   });
+  const [socialAccounts, setSocialAccounts] = useState(defaultSocial);
 
   useEffect(() => {
     if (user) localStorage.setItem('drape_user', JSON.stringify(user));
@@ -34,8 +48,21 @@ export function AppProvider({ children }) {
     localStorage.setItem('drape_outfit_prefs', JSON.stringify(prefs));
   }, [outfitPrefs, selectedOccasion]);
 
+  useEffect(() => {
+    localStorage.setItem('drape_social', JSON.stringify(socialAccounts));
+  }, [socialAccounts]);
+
   return (
-    <AppContext.Provider value={{ user, setUser, selectedOccasion, setSelectedOccasion, outfitPrefs, setOutfitPrefs }}>
+    <AppContext.Provider value={{
+      user,
+      setUser,
+      selectedOccasion,
+      setSelectedOccasion,
+      outfitPrefs,
+      setOutfitPrefs,
+      socialAccounts,
+      setSocialAccounts,
+    }}>
       {children}
     </AppContext.Provider>
   );

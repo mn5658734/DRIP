@@ -14,6 +14,10 @@ export default function LoginPage() {
   const [error, setError] = useState('');
 
   const handleSendOtp = async () => {
+    if (!name?.trim()) {
+      setError('Name is required');
+      return;
+    }
     const p = phone.replace(/\D/g, '');
     if (p.length < 10) {
       setError('Enter a valid phone number');
@@ -49,7 +53,7 @@ export default function LoginPage() {
       setUser({
         id: res.user?.id || 'user-1',
         phone: res.user?.phone || phoneFormatted,
-        name: res.user?.name || name.trim() || 'User',
+        name: name.trim() || res.user?.name || 'User',
         isProfileComplete: res.user?.isProfileComplete ?? false,
       });
       navigate(res.user?.isProfileComplete ? '/' : '/profile-setup');
@@ -105,9 +109,12 @@ export default function LoginPage() {
           />
           <input
             className="input"
-            placeholder="Your name"
+            type="text"
+            placeholder="Your name (required)"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
+            autoComplete="name"
           />
           <input
             className="input"

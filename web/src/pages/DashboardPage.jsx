@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { get, post, uploadPhoto } from '../api';
+import SocialPostAnalyzerCard from '../components/SocialPostAnalyzerCard';
 
 const OCCASIONS = [
   { key: 'office', label: 'Office' },
@@ -73,7 +74,7 @@ const FOOTER_TABS = [
 ];
 
 export default function DashboardPage() {
-  const { user, setUser, selectedOccasion, setSelectedOccasion, outfitPrefs, setOutfitPrefs } = useApp();
+  const { user, setUser, selectedOccasion, setSelectedOccasion, outfitPrefs, setOutfitPrefs, setSocialAccounts } = useApp();
   const navigate = useNavigate();
   const [tab, setTab] = useState('home');
   const isFemale = user?.gender === 'female';
@@ -152,6 +153,10 @@ export default function DashboardPage() {
   };
 
   const handleLogout = () => {
+    setSocialAccounts({
+      instagram: { connected: false, username: '' },
+      facebook: { connected: false, userId: '' },
+    });
     setUser(null);
     navigate('/login');
   };
@@ -553,11 +558,12 @@ export default function DashboardPage() {
             <h2 style={{ fontSize: 20, marginBottom: 12 }}>Profile</h2>
             <div style={{ marginBottom: 16 }}>
               <p style={{ fontSize: 12, color: '#8892b0' }}>Name</p>
-              <p style={{ marginTop: 4 }}>{user?.name || 'User'}</p>
+              <p style={{ marginTop: 4 }}>{user?.name?.trim() || '—'}</p>
               <p style={{ fontSize: 12, color: '#8892b0', marginTop: 12 }}>Phone</p>
-              <p style={{ marginTop: 4 }}>{user?.phone || '+91 98765 43210'}</p>
+              <p style={{ marginTop: 4 }}>{user?.phone || '—'}</p>
             </div>
-            <Link to="/profile" className="btn btn-secondary" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>
+            <SocialPostAnalyzerCard />
+            <Link to="/profile" className="btn btn-secondary" style={{ display: 'block', textAlign: 'center', textDecoration: 'none', marginTop: 16 }}>
               Full Profile
             </Link>
             <button className="btn btn-secondary" onClick={handleLogout} style={{ marginTop: 12 }}>

@@ -22,6 +22,9 @@ router.post('/verify-otp', async (req, res) => {
   if (!phone || !otp) {
     return res.status(400).json({ error: 'Phone and OTP are required' });
   }
+  if (!(name || '').trim()) {
+    return res.status(400).json({ error: 'Name is required' });
+  }
   const existingUser = MOCK_USERS.find(u => u.phone === phone);
   const user = existingUser || {
     id: uuidv4(),
