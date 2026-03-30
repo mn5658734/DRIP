@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { get, post, uploadPhoto } from '../api';
 import SocialPostAnalyzerCard from '../components/SocialPostAnalyzerCard';
 import AppFooterNav from '../components/AppFooterNav';
+import ColorStyleWheelModal from '../components/ColorStyleWheelModal';
 
 const OCCASIONS = [
   { key: 'office', label: 'Office' },
@@ -73,13 +74,13 @@ export default function DashboardPage() {
   const location = useLocation();
   const [tab, setTab] = useState('home');
   const isFemale = user?.gender === 'female';
-  const [weather, setWeather] = useState(null);
   const [items, setItems] = useState([]);
   const [selectedForDonate, setSelectedForDonate] = useState([]);
   const [current, setCurrent] = useState(0);
   const [declutterScheduled, setDeclutterScheduled] = useState(false);
   const [showDripPopup, setShowDripPopup] = useState(false);
   const [dripValidationMsg, setDripValidationMsg] = useState('');
+  const [showColorWheel, setShowColorWheel] = useState(false);
 
   // Add clothes form state
   const [uploading, setUploading] = useState(false);
@@ -97,10 +98,6 @@ export default function DashboardPage() {
     ...(tags ? tags.split(',').map(t => t.trim()).filter(Boolean) : []),
   ];
   const canSave = pendingFiles.length > 0 && (category !== 'other' || customCategory.trim());
-
-  useEffect(() => {
-    get('/weather?city=Mumbai').then(setWeather).catch(() => setWeather({ temperature: 24, condition: 'Sunny' }));
-  }, []);
 
   useEffect(() => {
     get(`/wardrobe/${userId}`).then(d => setItems(d.items || [])).catch(() => setItems([]));
@@ -199,16 +196,8 @@ export default function DashboardPage() {
 
   const handleShowDrip = () => {
     setDripValidationMsg('');
-    if (!selectedOccasion) {
-      setDripValidationMsg('Please select an Occasion');
-      return;
-    }
-    if (!outfitPrefs.dayNight) {
-      setDripValidationMsg('Please select Day or Night');
-      return;
-    }
     if (items.length === 0) {
-      setDripValidationMsg('Add clothes to your wardrobe first');
+      setDripValidationMsg('Add clothes to your wardrobe first, then try again.');
       return;
     }
     setShowDripPopup(true);
@@ -236,15 +225,7 @@ export default function DashboardPage() {
       )}
       {tab === 'home' && (
         <>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
-            <h1 className="title" style={{ marginBottom: 0 }}>Hello {user?.name || 'User'}</h1>
-            {weather && (
-              <div className="card" style={{ padding: 12, marginBottom: 0 }}>
-                <div>{weather.temperature}°C</div>
-                <div style={{ fontSize: 12, color: '#8892b0' }}>{weather.condition}</div>
-              </div>
-            )}
-          </div>
+          <h1 className="title" style={{ marginBottom: 24 }}>Hello {user?.name?.trim() || 'User'}</h1>
           <Link to="/rush-mode" className="card" style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: 24, background: '#e94560' }}>
             <h2 style={{ fontSize: 20 }}>🔥 I'm Getting Late!</h2>
             <p style={{ fontSize: 14, opacity: 0.9 }}>AI picks best outfit in 3 sec</p>
@@ -255,7 +236,18 @@ export default function DashboardPage() {
       <div className="card" style={{ minHeight: 200, marginBottom: 80 }}>
         {tab === 'home' && (
           <>
-            <h2 style={{ fontSize: 20, marginBottom: 12 }}>Digital wardrobe</h2>
+            <div className="digital-wardrobe-heading">
+              <h2>Digital wardrobe</h2>
+              <button
+                type="button"
+                className="color-style-icon-btn"
+                title="Color-coded style wheel"
+                aria-label="Open color-coded style wheel"
+                onClick={() => setShowColorWheel(true)}
+              >
+                🎨
+              </button>
+            </div>
             <p style={{ color: '#8892b0', marginBottom: 16 }}>{items.length} items</p>
             {items.length === 0 ? (
               <div className="upload-zone" style={{ marginBottom: 0, cursor: 'pointer' }} onClick={() => setTab('wardrobe')}>
@@ -574,68 +566,129 @@ export default function DashboardPage() {
         <DripPopup
           outfits={buildOutfitCombos()}
           onClose={() => setShowDripPopup(false)}
+          occasionLabel={OCCASIONS.find(o => o.key === selectedOccasion)?.label}
+          dayNightLabel={DAY_NIGHT.find(d => d.key === outfitPrefs.dayNight)?.label}
         />
+      )}
+
+      {showColorWheel && <ColorStyleWheelModal onClose={() => setShowColorWheel(false)} />}
+    </div>
+  );
+}
+
+function DripOutfitGrid({ outfit }) {
+  if (!outfit) return null;
+  return (
+    <div className="drip-outfit-grid">
+      <div className="drip-outfit-item">
+        <div className="drip-outfit-label">Top</div>
+        <div className="drip-outfit-img">
+          {outfit.top?.imageUrl ? <img src={outfit.top.imageUrl} alt={outfit.top.category} /> : <span style={{ color: '#8892b0' }}>—</span>}
+        </div>
+        <div className="drip-outfit-name">{outfit.top?.category || '—'}</div>
+      </div>
+      <div className="drip-outfit-item">
+        <div className="drip-outfit-label">Bottom</div>
+        <div className="drip-outfit-img">
+          {outfit.bottom?.imageUrl ? <img src={outfit.bottom.imageUrl} alt={outfit.bottom.category} /> : <span style={{ color: '#8892b0' }}>—</span>}
+        </div>
+        <div className="drip-outfit-name">{outfit.bottom?.category || '—'}</div>
+      </div>
+      {outfit.shoes && (
+        <div className="drip-outfit-item">
+          <div className="drip-outfit-label">Shoes</div>
+          <div className="drip-outfit-img">
+            <img src={outfit.shoes.imageUrl} alt={outfit.shoes.category} />
+          </div>
+          <div className="drip-outfit-name">{outfit.shoes.category}</div>
+        </div>
+      )}
+      {outfit.accessories && (
+        <div className="drip-outfit-item">
+          <div className="drip-outfit-label">Accessory</div>
+          <div className="drip-outfit-img">
+            <img src={outfit.accessories.imageUrl} alt={outfit.accessories.category} />
+          </div>
+          <div className="drip-outfit-name">{outfit.accessories.category}</div>
+        </div>
       )}
     </div>
   );
 }
 
-function DripPopup({ outfits, onClose }) {
+function DripPopup({ outfits, onClose, occasionLabel, dayNightLabel }) {
+  const scrollerRef = useRef(null);
   const [idx, setIdx] = useState(0);
-  const outfit = outfits[idx];
-  if (!outfit) return null;
 
-  const goPrev = () => setIdx(i => (i - 1 + outfits.length) % outfits.length);
-  const goNext = () => setIdx(i => (i + 1) % outfits.length);
+  if (!outfits?.length) return null;
+
+  const slideTo = (i) => {
+    const el = scrollerRef.current;
+    if (!el || !outfits.length) return;
+    const n = outfits.length;
+    const next = ((i % n) + n) % n;
+    el.scrollTo({ left: next * el.offsetWidth, behavior: 'smooth' });
+    setIdx(next);
+  };
+
+  const onCarouselScroll = () => {
+    const el = scrollerRef.current;
+    if (!el || !el.offsetWidth) return;
+    const i = Math.round(el.scrollLeft / el.offsetWidth);
+    setIdx(Math.min(Math.max(0, i), outfits.length - 1));
+  };
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (el) el.scrollLeft = 0;
+    setIdx(0);
+  }, [outfits.length]);
+
+  const ctx = [occasionLabel, dayNightLabel].filter(Boolean).join(' · ');
+  const prototypeNote = 'Prototype: swipe or use arrows to browse outfit ideas from your wardrobe.';
 
   return (
     <div className="drip-popup-overlay" onClick={onClose}>
       <div className="drip-popup" onClick={e => e.stopPropagation()}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <h2 style={{ fontSize: 20, margin: 0 }}>Your DRIP</h2>
-          <button type="button" onClick={onClose} style={{ background: 'none', border: 'none', color: '#8892b0', fontSize: 24, cursor: 'pointer' }}>×</button>
+          <button type="button" aria-label="Close" onClick={onClose} style={{ background: 'none', border: 'none', color: '#8892b0', fontSize: 24, cursor: 'pointer', lineHeight: 1 }}>×</button>
         </div>
-        <div className="drip-carousel-wrap">
-          <button type="button" className="drip-nav-btn" onClick={goPrev}>‹</button>
-          <div className="drip-outfit-card">
-            <div className="drip-outfit-grid">
-              <div className="drip-outfit-item">
-                <div className="drip-outfit-label">Top</div>
-                <div className="drip-outfit-img">
-                  {outfit.top?.imageUrl ? <img src={outfit.top.imageUrl} alt={outfit.top.category} /> : <span>—</span>}
-                </div>
-                <div className="drip-outfit-name">{outfit.top?.category || '—'}</div>
+        {ctx ? (
+          <p style={{ fontSize: 13, color: '#a8b2d1', marginBottom: 8 }}>{ctx}</p>
+        ) : (
+          <p style={{ fontSize: 13, color: '#8892b0', marginBottom: 8 }}>Pick occasion & day/night above for context (optional).</p>
+        )}
+        <p style={{ fontSize: 12, color: '#8892b0', marginBottom: 16, lineHeight: 1.4 }}>{prototypeNote}</p>
+
+        <div className="drip-carousel-wrap drip-carousel-wrap--popup">
+          <button type="button" className="drip-nav-btn" aria-label="Previous look" onClick={() => slideTo(idx - 1)}>‹</button>
+          <div
+            ref={scrollerRef}
+            className="drip-popup-carousel"
+            onScroll={onCarouselScroll}
+          >
+            {outfits.map((outfit, i) => (
+              <div key={outfit.id || i} className="drip-popup-slide">
+                <p style={{ fontSize: 12, color: '#e94560', marginBottom: 10, fontWeight: 600 }}>Look {i + 1} of {outfits.length}</p>
+                <DripOutfitGrid outfit={outfit} />
               </div>
-              <div className="drip-outfit-item">
-                <div className="drip-outfit-label">Bottom</div>
-                <div className="drip-outfit-img">
-                  {outfit.bottom?.imageUrl ? <img src={outfit.bottom.imageUrl} alt={outfit.bottom.category} /> : <span>—</span>}
-                </div>
-                <div className="drip-outfit-name">{outfit.bottom?.category || '—'}</div>
-              </div>
-              {outfit.shoes && (
-                <div className="drip-outfit-item">
-                  <div className="drip-outfit-label">Shoes</div>
-                  <div className="drip-outfit-img">
-                    <img src={outfit.shoes.imageUrl} alt={outfit.shoes.category} />
-                  </div>
-                  <div className="drip-outfit-name">{outfit.shoes.category}</div>
-                </div>
-              )}
-              {outfit.accessories && (
-                <div className="drip-outfit-item">
-                  <div className="drip-outfit-label">Accessory</div>
-                  <div className="drip-outfit-img">
-                    <img src={outfit.accessories.imageUrl} alt={outfit.accessories.category} />
-                  </div>
-                  <div className="drip-outfit-name">{outfit.accessories.category}</div>
-                </div>
-              )}
-            </div>
+            ))}
           </div>
-          <button type="button" className="drip-nav-btn" onClick={goNext}>›</button>
+          <button type="button" className="drip-nav-btn" aria-label="Next look" onClick={() => slideTo(idx + 1)}>›</button>
         </div>
-        <p style={{ textAlign: 'center', color: '#8892b0', fontSize: 14 }}>{idx + 1} / {outfits.length}</p>
+
+        <div className="drip-popup-dots">
+          {outfits.map((_, i) => (
+            <button
+              key={i}
+              type="button"
+              className={`drip-popup-dot ${i === idx ? 'active' : ''}`}
+              aria-label={`Go to look ${i + 1}`}
+              onClick={() => slideTo(i)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
